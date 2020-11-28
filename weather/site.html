@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="css.css">
+  <script src = "countrycode.js"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.34/esri/css/esri.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+   <script src="https://kit.fontawesome.com/f2c02e37c6.js" crossorigin="anonymous"></script>
+   <script src = "cities.js"></script>
+   <script src = "search.js"></script>
+  <title>my site</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <div class = "wrapper">
+    <header>
+      <div id = "header_blur">
+      </div>
+      <div id = "header_content">
+        <div class = "menu">
+          <span class = "menu_item">
+            <a onclick="keypressed('','Enter');" style="font-size: 0.375rem;"><i class="fas fa-search fa-3x" style = "color:rgba(150,150,150)"></i></a>
+          </span>
+          <div id = "sbar_div">
+            <div id = "sbar_input">
+              <input id="search_bar" placeholder="Search the city..." onkeypress="keypressed(event,this.value);" onkeydown="s_backspacecheck(event.key,this.value);">
+            </div>
+            <div id = "sbar_sug">
+              <il class = "sugs">
+                <div id = "sugl1" class = "sugl" onmouseover = "s_onmouseover(this);" onmouseout = "s_onmouseout(this);" onmousedown="s_onmousedown(this);" onmouseup="s_onmouseup(this);">
+                  <label id = "sug1">Seoul</label>
+                </div>
+              </il>
+              <il class = "sugs">
+                <div id = "sugl2" class = "sugl" onmouseover = "s_onmouseover(this);" onmouseout = "s_onmouseout(this);" onmousedown="s_onmousedown(this);" onmouseup="s_onmouseup(this);">
+                  <label id = "sug2">New York</label>
+                </div>
+              </il>
+              <il class = "sugs">
+                <div id = "sugl3" class = "sugl" onmouseover = "s_onmouseover(this);" onmouseout = "s_onmouseout(this);" onmousedown="s_onmousedown(this);" onmouseup="s_onmouseup(this);">
+                  <label id = "sug3"></label>
+                </div>
+              </il>
+              <il class = "sugs">
+                <div id = "sugl4" class = "sugl" onmouseover = "s_onmouseover(this);" onmouseout = "s_onmouseout(this);" onmousedown="s_onmousedown(this);" onmouseup="s_onmouseup(this);">
+                  <label id = "sug4"></label>
+                </div>
+              </il>
+              <il class = "sugs">
+                <div id = "sugl5" class = "sugl" onmouseover = "s_onmouseover(this);" onmouseout = "s_onmouseout(this);" onmousedown="s_onmousedown(this);" onmouseup="s_onmouseup(this);">
+                  <label id = "sug5"></label>
+                </div>
+              </il>
+              <il class = "sugs">
+                <div id = "sugl6" class = "sugl" onmouseover = "s_onmouseover(this);" onmouseout = "s_onmouseout(this);" onmousedown="s_onmousedown(this);" onmouseup="s_onmouseup(this);">
+                  <label id = "sug6">Pusan</label>
+                </div>
+              </il>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div id = "column">
+      <div class = "blocks">
+        <div class = "verticalwrap">
+          <div id = "now">
+            <div style="padding-left: 0.5em" id = "headerinfo">
+              <img id = "weatherIcon"></img>
+              <label id = "temp">N/A</label>
+              <label id = "feel">N/A</label>
+              <div id = "weatherbox">
+                <i class="fas fa-map-marker-alt" id = "location"></i>
+                <label id = "nowlocation">N/A</label><br>
+                <label class = "feels_like_now"><label>
+              </div>
+            </div>
+        <!--<h1 id="weathertitle">weather</h1>-->
+        <!--<hr id = "weather-hr">-->
+            <div id = "weather">
+              <div id = "hourboxwraps">
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour1" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg1" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour1_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour2" class = "hourtext"></label>
+                   </div>
+                   <img id = "hourimg2" class = "hourimg">
+                   </img>
+                   <div class = "hour_temp">
+                     <label id = "hour2_temp" class = "temptext"></label>
+                   </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour3" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg3" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour3_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour4" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg4" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour4_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour5" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg5" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour5_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour6" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg6" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour6_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour7" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg7" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour7_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class = "hourboxwrap">
+                  <div class = "hourbox">
+                    <div class = "hour">
+                      <label id = "hour8" class = "hourtext"></label>
+                    </div>
+                    <img id = "hourimg8" class = "hourimg">
+                    </img>
+                    <div class = "hour_temp">
+                      <label id = "hour8_temp" class = "temptext"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id = "two_sqaure">
+            <div class = "minisquare" id = "square1">
+              <div style="height:20px;text-align: center;">
+                <label style="color:white;">Feels like</label>
+              </div>
+              <div id = "feels_like_canvas">
+                <canvas id = "chart"></canvas>
+              </div>
+            </div>
+            <div class = "minisquare" id = "square2">
+              <div style="height:20px;text-align: center;">
+                <label style="color:grey;">Humidity</label>
+              </div>
+              <div id = "humid_canvas">
+                <canvas id = "chart2"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id = "map_wrapper">
+          <div id = "map">
+            <div id = "kakao_map"></div>
+            <div id="leaflet"></div>
+          </div>
+        </div>
+      </div>
+      <div id = "per_day_wrapper">
+        <div id = "per_day">
+          <div id = "per_day_block">
+            <div id = "day1" class = "daily">
+              <div class = "daily_label_div">
+                <label id = "day1label"></label>
+              </div>
+              <div class = "day_main">
+                <div class = "day_humid">
+                  <label id = "day1humid"></label>
+                </div>
+                <div class = "day_icon">
+                  <img id = "day1icon"></img>
+                </div>
+                <div class = "day_icon2">
+                  <img id = "day1icon2"></img>
+                </div>
+                <div class = "day_temp">
+                  <label id = "day1temp"></label>
+                  <span class = daytemp_min>
+                    <label id = "day1temp_min"></label>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id = "day2" class = "daily">
+              <div class = "daily_label_div">
+                <label id = "day2label"></label>
+              </div>
+              <div class = "day_main">
+                <div class = "day_humid">
+                  <label id = "day2humid"></label>
+                </div>
+                <div class = "day_icon">
+                  <img id = "day2icon"></img>
+                </div>
+                <div class = "day_icon2">
+                  <img id = "day2icon2"></img>
+                </div>
+                <div class = "day_temp">
+                  <label id = "day2temp"></label>
+                  <span class = daytemp_min>
+                    <label id = "day2temp_min"></label>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id = "day3" class = "daily">
+              <div class = "daily_label_div">
+                <label id = "day3label"></label>
+              </div>
+              <div class = "day_main">
+                <div class = "day_humid">
+                  <label id = "day3humid"></label>
+                </div>
+                <div class = "day_icon">
+                  <img id = "day3icon"></img>
+                </div>
+                <div class = "day_icon2">
+                  <img id = "day3icon2"></img>
+                </div>
+                <div class = "day_temp">
+                  <label id = "day3temp"></label>
+                  <span class = daytemp_min>
+                    <label id = "day3temp_min"></label>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id = "day4" class = "daily">
+              <div class = "daily_label_div">
+                <label id = "day4label"></label>
+              </div>
+              <div class = "day_main">
+                <div class = "day_humid">
+                  <label id = "day4humid"></label>
+                </div>
+                <div class = "day_icon">
+                  <img id = "day4icon"></img>
+                </div>
+                <div class = "day_icon2">
+                  <img id = "day4icon2"></img>
+                </div>
+                <div class = "day_temp">
+                  <label id = "day4temp"></label>
+                  <span class = daytemp_min>
+                    <label id = "day4temp_min"></label>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div id = "day5" class = "daily">
+              <div class = "daily_label_div">
+                <label id = "day5label"></label>
+              </div>
+              <div class = "day_main">
+                <div class = "day_humid">
+                  <label id = "day5humid"></label>
+                </div>
+                <div class = "day_icon">
+                  <img id = "day5icon"></img>
+                </div>
+                <div class = "day_icon2">
+                  <img id = "day5icon2"></img>
+                </div>
+                <div class = "day_temp">
+                  <label id = "day5temp"></label>
+                  <span class = daytemp_min>
+                    <label id = "day5temp_min"></label>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=bf1caeb42a36555d77e1e7a100bc11c3"></script>
+<script src="chart.js"></script>
+<script src = "WEATHER.js"></script>
+</body>
+</html>
